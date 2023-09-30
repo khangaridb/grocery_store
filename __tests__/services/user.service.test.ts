@@ -34,6 +34,7 @@ describe("User service", () => {
       name: "test",
       role: "role",
       buildingId: "123",
+      email: "testEmail",
     };
 
     await userService.createUser({

@@ -1,4 +1,4 @@
-# Grocery store in
+# Grocery store
 
 Walkthrough video
 

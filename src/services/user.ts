@@ -7,8 +7,16 @@ import { UserTypes } from "../common/constants";
 const { ObjectId } = mongoose.Types;
 
 export class UserService {
-  public async registerUser(args: RegisterUserInput): Promise<UserType | null> {
-    const user = await UserModel.create({ ...args });
+  public async registerUser(inputs: RegisterUserInput): Promise<UserType | null> {
+    const { email, password, name, role, buildingId } = inputs;
+
+    const user = await UserModel.create({
+      email,
+      password,
+      name,
+      role,
+      buildingId,
+    });
 
     return await UserModel.findOne(
       { _id: user._id },
@@ -20,12 +28,16 @@ export class UserService {
     );
   }
 
-  public async createUser(args: CreateUserInput): Promise<UserType> {
-    return await UserModel.create({ ...args });
+  public async createUser(inputs: CreateUserInput): Promise<UserType> {
+    const { name, buildingId, role, email } = inputs;
+    return await UserModel.create({ name, buildingId, role, email });
   }
 
   public async updateUser(id: string, inputs: UpdateUserInput): Promise<UserType | null> {
     const userId = new ObjectId(id);
+
+    const { name, buildingId, role, email } = inputs;
+
     const user = await UserModel.findById(userId);
 
     if (!user) throw new Error("User not found");
@@ -34,7 +46,10 @@ export class UserService {
       { _id: userId },
       {
         $set: {
-          ...inputs,
+          name,
+          buildingId,
+          role,
+          email,
         },
       }
     );
