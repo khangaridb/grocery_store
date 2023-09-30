@@ -3,28 +3,30 @@ import { Request, Response } from "express";
 import { userService } from "../services";
 
 import validate from "../middlewares/param-validate";
+import * as permissionUtils from "../utils/permission";
 import { createValidators, updateValidators } from "./user.validators";
 import { UserTypes } from "../common/constants";
 
 const router = Router();
 
-type GetUsersByBuildingIdReq = Request<
-  {},
-  {},
-  {},
-  {
+type GetUsersByBuildingIdReq = Request & {
+  query: {
     buildingId: string;
     includeDescendant: boolean;
-  }
->;
+  };
+};
 
 router.post("/create", createValidators, validate, async (req: Request, res: Response) => {
+  await permissionUtils.checkIfUserIsManager(req);
+
   const user = await userService.createUser(req.body);
 
   return res.json({ ...user });
 });
 
 router.post("/update", updateValidators, validate, async (req: Request, res: Response) => {
+  await permissionUtils.checkIfUserIsManager(req);
+
   const { userId, ...args } = req.body;
   const user = await userService.updateUser(userId, args);
 
@@ -32,6 +34,8 @@ router.post("/update", updateValidators, validate, async (req: Request, res: Res
 });
 
 router.post("/remove", updateValidators, validate, async (req: Request, res: Response) => {
+  await permissionUtils.checkIfUserIsManager(req);
+
   const { userId } = req.body;
   const user = await userService.removeUser(userId);
 
@@ -47,6 +51,8 @@ router.get("/getEmplooyees", async (req: GetUsersByBuildingIdReq, res: Response)
 });
 
 router.get("/getManagers", async (req: GetUsersByBuildingIdReq, res: Response) => {
+  await permissionUtils.checkIfUserIsManager(req);
+
   const { buildingId, includeDescendant } = req.query;
 
   const result = await userService.getUsersByBuildingId(buildingId, UserTypes.MANAGER, includeDescendant);
