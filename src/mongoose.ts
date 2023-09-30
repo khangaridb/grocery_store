@@ -21,5 +21,5 @@ mongoose.connection
 export const connectDb = (URL?: string) => {
   let dbUrl = URL ?? MONGO_URL;
 
-  mongoose.connect(dbUrl, { autoIndex: true, autoCreate: true });
+  return mongoose.connect(dbUrl, { autoIndex: true, autoCreate: true });
 };

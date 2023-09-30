@@ -13,7 +13,7 @@ const initDb = async () => {
 
   await connection.connection.dropDatabase();
 
-  const datas = require("./datas2.json");
+  const datas = require("./datas.json");
 
   const buildings: Record<string, string> = {};
 

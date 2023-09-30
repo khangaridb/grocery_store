@@ -17,7 +17,7 @@ const schema = new mongoose.Schema<UserType>(
     password: { type: String },
     email: { type: String, lowercase: true, trim: true, unique: true },
     role: { type: String },
-    buildingId: { type: mongoose.Schema.Types.ObjectId, ref: "Building", unique: true },
+    buildingId: { type: mongoose.Schema.Types.ObjectId, ref: "Building" },
   },
   {
     timestamps: true,

@@ -6,8 +6,17 @@ import BuildingModel from "../models/building";
 const { ObjectId } = mongoose.Types;
 
 export class UserService {
-  public async registerUser(args: RegisterUserInput): Promise<UserType> {
-    return await UserModel.create({ ...args });
+  public async registerUser(args: RegisterUserInput): Promise<UserType | null> {
+    const user = await UserModel.create({ ...args });
+
+    return await UserModel.findOne(
+      { _id: user._id },
+      {
+        role: 1,
+        name: 1,
+        email: 1,
+      }
+    );
   }
 
   public async createUser(args: CreateUserInput): Promise<UserType> {
@@ -77,7 +86,7 @@ export class UserService {
         },
       ]);
 
-      buildingIdFilter = { $in: result[0].ids };
+      buildingIdFilter = { $in: result[0].ids.concat(buildingId) };
     }
 
     return await UserModel.find({

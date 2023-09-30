@@ -52,7 +52,8 @@ describe("User service", () => {
   });
 
   it("should call register with correct inputs", async () => {
-    const createSpy = jest.spyOn(UserModel, "create");
+    jest.spyOn(UserModel, "findOne").mockResolvedValueOnce(mockUser);
+    const createSpy = jest.spyOn(UserModel, "create").mockResolvedValueOnce(mockUser as any);
 
     const input = {
       email: "test",
