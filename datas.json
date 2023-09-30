@@ -1,0 +1,108 @@
+[
+  {
+    "name": "Radnja 1",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 2",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 3",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 4",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 5",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 6",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 7",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 8",
+    "type": "store"
+  },
+  {
+    "name": "Radnja 9",
+    "type": "store"
+  },
+  {
+    "name": "Subotica",
+    "type": "office",
+    "childBuildingNames": ["Radnja 1"]
+  },
+  {
+    "name": "Detelinara",
+    "type": "office",
+    "childBuildingNames": ["Radnja 2", "Radnja 3"]
+  },
+  {
+    "name": "Liman",
+    "type": "office",
+    "childBuildingNames": ["Radnja 4", "Radnja 5"]
+  },
+  {
+    "name": "Novi Sad",
+    "type": "office",
+    "childBuildingNames": ["Liman", "Detelinara"]
+  },
+  {
+    "name": "Juznobacki okrug",
+    "type": "office",
+    "childBuildingNames": ["Novi sad"]
+  },
+  {
+    "name": "Severnobacki okrug",
+    "type": "office",
+    "childBuildingNames": ["Subotica"]
+  },
+  {
+    "name": "Bezanija",
+    "type": "office",
+    "childBuildingNames": ["Radnja 6"]
+  },
+  {
+    "name": "Neimar",
+    "type": "office",
+    "childBuildingNames": ["Radnja 7"]
+  },
+  {
+    "name": "Crveni krst",
+    "type": "office",
+    "childBuildingNames": ["Radnja 8", "Radnja 9"]
+  },
+  {
+    "name": "Vracar",
+    "type": "office",
+    "childBuildingNames": ["Neimar", "Crveni krst"]
+  },
+  {
+    "name": "Novi Beograd",
+    "type": "office",
+    "childBuildingNames": ["Bezanija"]
+  },
+  {
+    "name": "Vojvodina",
+    "type": "office",
+    "childBuildingNames": ["Severnobacki okrug", "Juznobacki okrug"]
+  },
+  {
+    "name": "Grad Beograd",
+    "type": "office",
+    "childBuildingNames": ["Novi Beograd", "Vracar"]
+  },
+  {
+    "name": "Srbija",
+    "type": "office",
+    "childBuildingNames": ["Grad Beograd", "Vojvodina"]
+  }
+]
