@@ -57,7 +57,7 @@ router.get("/getEmplooyees", async (req: GetUsersByBuildingIdReq, res: Response,
   try {
     const { buildingId, includeDescendant } = req.query;
 
-    const result = await userService.getUsersByBuildingId(buildingId, UserTypes.EMPLOYEE, includeDescendant);
+    const result = await userService.getUsersByBuildingId(buildingId, [UserTypes.EMPLOYEE], includeDescendant);
 
     return res.json({ result });
   } catch (err) {
@@ -71,7 +71,7 @@ router.get("/getManagers", async (req: GetUsersByBuildingIdReq, res: Response, n
 
     const { buildingId, includeDescendant } = req.query;
 
-    const result = await userService.getUsersByBuildingId(buildingId, UserTypes.MANAGER, includeDescendant);
+    const result = await userService.getUsersByBuildingId(buildingId, [UserTypes.EMPLOYEE, UserTypes.MANAGER], includeDescendant);
 
     return res.json({ result });
   } catch (err) {

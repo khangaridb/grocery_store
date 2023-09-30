@@ -2,6 +2,7 @@ import { CreateUserInput, UpdateUserInput, RegisterUserInput } from "./user.type
 import UserModel, { UserType } from "../models/user";
 import mongoose from "mongoose";
 import BuildingModel from "../models/building";
+import { UserTypes } from "../common/constants";
 
 const { ObjectId } = mongoose.Types;
 
@@ -59,7 +60,7 @@ export class UserService {
     return await UserModel.findOne({ email });
   }
 
-  public async getUsersByBuildingId(buildingId: string, userType: string, includeDescendant?: boolean) {
+  public async getUsersByBuildingId(buildingId: string, userTypes: string[], includeDescendant?: boolean) {
     let buildingIdFilter: any = buildingId;
 
     if (includeDescendant) {
@@ -91,7 +92,7 @@ export class UserService {
 
     return await UserModel.find({
       buildingId: buildingIdFilter,
-      role: userType,
+      role: { $in: userTypes },
     });
   }
 }

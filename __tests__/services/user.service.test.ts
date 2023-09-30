@@ -111,18 +111,18 @@ describe("User service", () => {
     const userType = UserTypes.EMPLOYEE;
 
     it("should only get users from a single building", async () => {
-      await userService.getUsersByBuildingId(buildingId, userType, false);
+      await userService.getUsersByBuildingId(buildingId, [userType], false);
 
       expect(UserModel.find).toBeCalledWith({
         buildingId,
-        role: userType,
+        role: { $in: [userType] },
       });
     });
 
     it("should call aggregate to retrieve child building ids", async () => {
       jest.spyOn(BuildingModel, "aggregate").mockResolvedValueOnce([{ ids: [] }]);
 
-      await userService.getUsersByBuildingId(buildingId, userType, true);
+      await userService.getUsersByBuildingId(buildingId, [UserTypes.EMPLOYEE, UserTypes.MANAGER], true);
 
       expect(BuildingModel.aggregate).toBeCalledWith([
         {

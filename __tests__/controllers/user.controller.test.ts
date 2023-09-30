@@ -129,7 +129,7 @@ describe("User Controller tests", () => {
         includeDescendant: "false",
       });
 
-      expect(userService.getUsersByBuildingId).toBeCalledWith("buildingId", UserTypes.EMPLOYEE, "false");
+      expect(userService.getUsersByBuildingId).toBeCalledWith("buildingId", [UserTypes.EMPLOYEE], "false");
     });
 
     it("should throw an error", async () => {
@@ -151,7 +151,7 @@ describe("User Controller tests", () => {
         includeDescendant: "true",
       });
 
-      expect(userService.getUsersByBuildingId).toBeCalledWith("buildingId", UserTypes.MANAGER, "true");
+      expect(userService.getUsersByBuildingId).toBeCalledWith("buildingId", [UserTypes.EMPLOYEE, UserTypes.MANAGER], "true");
     });
 
     it("should throw an error", async () => {
