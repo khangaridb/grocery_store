@@ -14,7 +14,7 @@ export class UserService {
     return await UserModel.create({ ...args });
   }
 
-  public async updateUser(id: string, args: UpdateUserInput): Promise<UserType | null> {
+  public async updateUser(id: string, inputs: UpdateUserInput): Promise<UserType | null> {
     const userId = new ObjectId(id);
     const user = await UserModel.findById(userId);
 
@@ -24,12 +24,20 @@ export class UserService {
       { _id: userId },
       {
         $set: {
-          ...args,
+          ...inputs,
         },
       }
     );
 
-    const updatedUser = await UserModel.findById(userId);
+    const updatedUser = await UserModel.findOne(
+      { _id: userId },
+      {
+        role: 1,
+        name: 1,
+        email: 1,
+        buildingId: 1,
+      }
+    );
 
     return updatedUser;
   }

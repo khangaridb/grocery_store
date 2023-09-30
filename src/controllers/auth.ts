@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { NextFunction, Router } from "express";
 import { userService } from "../services";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -8,17 +8,21 @@ import { Request, Response } from "express";
 
 const router = Router();
 
-router.use("/register", registerValidators, validate, async (req: Request, res: Response) => {
+router.use("/register", registerValidators, validate, async (req: Request, res: Response, next: NextFunction) => {
   const { email, password }: { email: string; password: string } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await userService.registerUser({
-    email,
-    password: hashedPassword,
-  });
+    const user = await userService.registerUser({
+      email,
+      password: hashedPassword,
+    });
 
-  return res.status(201).json({ message: "User registered successfully", user });
+    return res.status(201).json({ message: "User registered successfully", user });
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.use("/login", loginValidators, validate, async (req: Request, res: Response) => {

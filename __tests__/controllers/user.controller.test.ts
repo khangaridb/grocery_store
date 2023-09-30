@@ -2,6 +2,7 @@ import app from "../../src";
 import userService from "../../src/services/user";
 import request from "supertest";
 import { UserTypes } from "../../src/common/constants";
+import * as permisisonUtils from "../../src/utils/permission";
 
 jest.mock("../../src/services/user", () => ({
   createUser: jest.fn(),
@@ -11,8 +12,13 @@ jest.mock("../../src/services/user", () => ({
 }));
 
 jest.mock("../../src/middlewares/auth", () => jest.fn().mockImplementation((req, res, next) => next()));
+jest.mock("../../src/utils/permission", () => ({
+  checkIfUserIsManager: jest.fn(),
+}));
 
 describe("User Controller tests", () => {
+  jest.spyOn(permisisonUtils, "checkIfUserIsManager").mockImplementation(() => true);
+
   describe("Create user", () => {
     beforeEach(() => {
       jest.restoreAllMocks();
@@ -35,6 +41,16 @@ describe("User Controller tests", () => {
 
       expect(res.statusCode).toBe(200);
       expect(userService.createUser).toBeCalledTimes(1);
+    });
+
+    it("should throw an error", async () => {
+      jest.spyOn(userService, "createUser").mockRejectedValueOnce(new Error(""));
+      const res = await request(app).post("/api/user/create").send({
+        email: "test@gmail.com",
+        role: "Employee",
+      });
+
+      expect(res.statusCode).toBe(500);
     });
   });
 
@@ -61,6 +77,16 @@ describe("User Controller tests", () => {
       expect(res.statusCode).toBe(200);
       expect(userService.updateUser).toBeCalledTimes(1);
     });
+
+    it("should throw an error", async () => {
+      jest.spyOn(userService, "updateUser").mockRejectedValueOnce(new Error(""));
+      const res = await request(app).post("/api/user/update").send({
+        userId: "123",
+        role: "Employee",
+      });
+
+      expect(res.statusCode).toBe(500);
+    });
   });
 
   describe("Remove user", () => {
@@ -85,6 +111,15 @@ describe("User Controller tests", () => {
       expect(res.statusCode).toBe(200);
       expect(userService.removeUser).toBeCalledTimes(1);
     });
+
+    it("should throw an error", async () => {
+      jest.spyOn(userService, "removeUser").mockRejectedValueOnce(new Error("error occured"));
+      const res = await request(app).post("/api/user/remove").send({
+        userId: "123",
+      });
+
+      expect(res.statusCode).toBe(500);
+    });
   });
 
   describe("Get all employees", () => {
@@ -96,6 +131,17 @@ describe("User Controller tests", () => {
 
       expect(userService.getUsersByBuildingId).toBeCalledWith("buildingId", UserTypes.EMPLOYEE, "false");
     });
+
+    it("should throw an error", async () => {
+      jest.spyOn(userService, "getUsersByBuildingId").mockRejectedValueOnce(new Error("error occured"));
+
+      const res = await request(app).get("/api/user/getEmplooyees").query({
+        buildingId: "buildingId",
+        includeDescendant: "false",
+      });
+
+      expect(res.status).toBe(500);
+    });
   });
 
   describe("Get all managers", () => {
@@ -106,6 +152,17 @@ describe("User Controller tests", () => {
       });
 
       expect(userService.getUsersByBuildingId).toBeCalledWith("buildingId", UserTypes.MANAGER, "true");
+    });
+
+    it("should throw an error", async () => {
+      jest.spyOn(userService, "getUsersByBuildingId").mockRejectedValueOnce(new Error(""));
+
+      const res = await request(app).get("/api/user/getManagers").query({
+        buildingId: "buildingId",
+        includeDescendant: "false",
+      });
+
+      expect(res.status).toBe(500);
     });
   });
 });

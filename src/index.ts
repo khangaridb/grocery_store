@@ -7,6 +7,7 @@ import routes from "./controllers";
 
 import passport from "passport";
 import passportInit from "./passport";
+import { wrapExceptionHandler } from "./utils";
 
 dotenv.config();
 const { PORT, NODE_ENV } = process.env;
@@ -27,6 +28,7 @@ app.use(bodyParser.json());
 
 // Initializing routes
 app.use("/api", routes);
+app.use(wrapExceptionHandler);
 
 if (NODE_ENV !== "test") {
   app.listen(PORT ?? 5000, async () => {
