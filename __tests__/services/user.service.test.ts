@@ -27,6 +27,17 @@ describe("User service", () => {
     name: "test",
   };
 
+  it("should throw an error if user is duplicated", async () => {
+    jest.spyOn(UserModel, "findOne").mockResolvedValueOnce(mockUser);
+    expect.assertions(1);
+
+    try {
+      await userService.checkDuplicateUser("email");
+    } catch (err) {
+      expect(err).toBeDefined();
+    }
+  });
+
   it("should call create with correct inputs", async () => {
     const createSpy = jest.spyOn(UserModel, "create");
 
@@ -54,6 +65,7 @@ describe("User service", () => {
 
   it("should call register with correct inputs", async () => {
     jest.spyOn(UserModel, "findOne").mockResolvedValueOnce(mockUser);
+    jest.spyOn(userService, "checkDuplicateUser").mockImplementation();
     const createSpy = jest.spyOn(UserModel, "create").mockResolvedValueOnce(mockUser as any);
 
     const input = {

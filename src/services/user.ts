@@ -7,8 +7,18 @@ import { UserTypes } from "../common/constants";
 const { ObjectId } = mongoose.Types;
 
 export class UserService {
+  public async checkDuplicateUser(email: string): Promise<void> {
+    const duplicateUser = await UserModel.findOne({ email });
+
+    if (duplicateUser) {
+      throw new Error("User is already registered");
+    }
+  }
+
   public async registerUser(inputs: RegisterUserInput): Promise<UserType | null> {
     const { email, password, name, role, buildingId } = inputs;
+
+    await this.checkDuplicateUser(email);
 
     const user = await UserModel.create({
       email,
@@ -30,6 +40,9 @@ export class UserService {
 
   public async createUser(inputs: CreateUserInput): Promise<UserType> {
     const { name, buildingId, role, email } = inputs;
+
+    await this.checkDuplicateUser(email);
+
     return await UserModel.create({ name, buildingId, role, email });
   }
 

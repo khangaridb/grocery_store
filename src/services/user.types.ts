@@ -1,24 +1,24 @@
 import { UserTypes } from "../common/constants";
 
 export type RegisterUserInput = {
-  email: String;
-  password: String;
-  name?: String;
+  email: string;
+  password: string;
+  name?: string;
   role?: UserTypes;
-  buildingId?: String;
+  buildingId?: string;
 };
 
 export type CreateUserInput = {
-  name?: String;
-  buildingId?: String;
-  role?: String;
-  email: String;
+  name?: string;
+  buildingId?: string;
+  role?: string;
+  email: string;
 };
 
 export type UpdateUserInput = {
-  id?: String;
-  name?: String;
-  buildingId?: String;
-  role?: String;
-  email?: String;
+  id?: string;
+  name?: string;
+  buildingId?: string;
+  role?: string;
+  email?: string;
 };
