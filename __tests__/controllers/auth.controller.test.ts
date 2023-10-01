@@ -66,7 +66,7 @@ describe("Auth Controller tests", () => {
     const findByEmailSpy = jest.spyOn(userService, "findByEmail");
     const compareSpy = jest.spyOn(bcrypt, "compare");
     const mockUser = {
-      _id: "123",
+      _id: new mongoose.Types.ObjectId(),
       email: "test@gmail.com",
       password: "password",
       role: "Employee",

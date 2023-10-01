@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const schemaName = "User";
 
 export interface UserType {
-  _id: string;
+  _id: mongoose.Types.ObjectId;
   name: string;
   email: string;
   password: string;

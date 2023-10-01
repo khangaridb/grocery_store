@@ -1,8 +1,7 @@
 import { CreateUserInput, UpdateUserInput, RegisterUserInput } from "./user.types";
 import UserModel, { UserType } from "../models/user";
-import mongoose from "mongoose";
-import BuildingModel from "../models/building";
-import { UserTypes } from "../common/constants";
+import mongoose, { FilterQuery } from "mongoose";
+import BuildingModel, { BuildingType } from "../models/building";
 
 const { ObjectId } = mongoose.Types;
 
@@ -89,7 +88,7 @@ export class UserService {
   }
 
   public async getUsersByBuildingId(buildingId: string, userTypes: string[], includeDescendant?: boolean) {
-    let buildingIdFilter: any = buildingId;
+    let buildingIdFilter: FilterQuery<BuildingType> | string = buildingId;
 
     if (includeDescendant) {
       const result = await BuildingModel.aggregate([

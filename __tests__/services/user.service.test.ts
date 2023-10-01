@@ -1,8 +1,8 @@
 import { userService } from "../../src/services";
-import UserModel from "../../src/models/user";
+import UserModel, { UserType } from "../../src/models/user";
 import BuildingModel from "../../src/models/building";
 import { UserTypes } from "../../src/common/constants";
-import mongoose from "mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
 
 jest.mock("../../src/models/user", () => ({
   create: jest.fn(),
@@ -96,8 +96,10 @@ describe("User service", () => {
 
       try {
         await userService.updateUser(new mongoose.Types.ObjectId().toString(), { role: UserTypes.MANAGER });
-      } catch (e: any) {
-        expect(e.message).toBe("User not found");
+      } catch (err) {
+        if (err instanceof Error) {
+          expect(err.message).toBe("User not found");
+        }
       }
     });
 
