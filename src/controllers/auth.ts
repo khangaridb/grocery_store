@@ -8,7 +8,7 @@ import { Request, Response } from "express";
 
 const router = Router();
 
-router.use("/register", registerValidators, validate, async (req: Request, res: Response, next: NextFunction) => {
+router.post("/register", registerValidators, validate, async (req: Request, res: Response, next: NextFunction) => {
   const { email, password }: { email: string; password: string } = req.body;
 
   try {
@@ -25,7 +25,7 @@ router.use("/register", registerValidators, validate, async (req: Request, res: 
   }
 });
 
-router.use("/login", loginValidators, validate, async (req: Request, res: Response) => {
+router.post("/login", loginValidators, validate, async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await userService.findByEmail(email);
